@@ -5,13 +5,14 @@ import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
 import views.html
+import models.BlogForm
 
 object Application extends Controller {
-  val blogForm: Form[(String, String)] = Form(
-    tuple(
+  val blogForm: Form[BlogForm] = Form(
+    mapping(
       "title" -> text(minLength = 4),
       "content" -> nonEmptyText
-    )
+    )(BlogForm.apply)(BlogForm.unapply)
   )
 
   def index = Action {
@@ -24,9 +25,9 @@ object Application extends Controller {
 
   def newBlog = Action { implicit request =>
     blogForm.bindFromRequest.fold(
-      errors => BadRequest(views.html.blogs(BlogService.all(), errors)),
-      success => {
-        BlogService.add(success._1, success._2)
+      errorModel => BadRequest(views.html.blogs(BlogService.all(), errorModel)),
+      successModel => {
+        BlogService.add(successModel.title, successModel.content)
         Redirect(routes.Application.blogs)
       }
     )

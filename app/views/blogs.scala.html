@@ -1,18 +1,11 @@
-@(blogs: List[Blog], blogForm: Form[(String, String)])
+@(blogs: List[Blog], blogForm: Form[BlogForm])
 @import helper._
+@import partials._
 
 @main("View All"){
-    <h1>Currently @blogs.size</h1>
-
     <div>
         @blogs.map { blog =>
-            <div>
-                <h3>@blog.title</h3>
-                <hr />
-                <div>
-                    @blog.content
-                </div>
-            </div>
+            @blogPartial(blog)
         }
     </div>
 
