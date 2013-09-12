@@ -1,0 +1,24 @@
+@(blogs: List[Blog], blogForm: Form[(String, String)])
+@import helper._
+
+@main("View All"){
+    <h1>Currently @blogs.size</h1>
+
+    <div>
+        @blogs.map { blog =>
+            <div>
+                <h3>@blog.title</h3>
+                <hr />
+                <div>
+                    @blog.content
+                </div>
+            </div>
+        }
+    </div>
+
+    @form(routes.Application.newBlog) {
+        @inputText(blogForm("title"))
+        @inputText(blogForm("content"))
+        <input type="submit" value="Add Blog" />
+    }
+}
