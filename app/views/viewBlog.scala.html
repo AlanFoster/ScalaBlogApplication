@@ -1,0 +1,33 @@
+@(blogOption: Option[Blog])
+@import helper._
+@import partials._
+
+
+@blogFound(blog: Blog) = {
+    @main("Viewing blog") {
+        @blogPartial(blog)
+        <div>
+        @blog.comments.map { comment =>
+            <div>
+            <h3>@comment.commentId</h3>
+            @comment.content
+            </div>
+         }
+        </div>
+    }
+}
+
+@blogMissing = {
+    @main("Error") {
+        Blog not found
+    }
+}
+
+@blogOption match {
+    case Some(blog) => {
+        @blogFound(blog)
+    }
+    case _ => {
+        @blogMissing
+    }
+}

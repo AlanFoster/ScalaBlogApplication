@@ -1,17 +1,25 @@
 package services
 
-import models.{User, Blog}
+import models.{Comment, User, Blog}
 import anorm._
 import anorm.SqlParser._
 import play.api.Play.current
 import play.api.db.DB
 
 object BlogService {
+  val comment: RowParser[Comment] = {
+    get[Long]("commentId") ~
+    get[Long]("blogId") ~
+    get[String]("content") map {
+      case commentId~blogId~content => Comment(commentId, blogId, content)
+    }
+  }
+
   val blog: RowParser[Blog] = {
-    get[Long]("id") ~
+    get[Long]("blogId") ~
     get[String]("title") ~
     get[String]("content") map {
-      case id~title~content => Blog(id, title, content)
+      case blogId~title~content => Blog(blogId, title, content, List(Comment(1, blogId, "User Comment")))
     }
   }
 

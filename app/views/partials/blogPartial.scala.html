@@ -1,9 +1,8 @@
 @(blog: Blog)
 <div>
-    <h3>@blog.title</h3>
+    <h3><a href="blogs/@blog.id">@blog.title</a></h3>
     <hr />
     <div>
-    @blog.content
-
+        @blog.content
     </div>
 </div>

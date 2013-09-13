@@ -28,13 +28,13 @@ object Application extends Controller {
       errorModel => BadRequest(views.html.blogs(BlogService.all(), errorModel)),
       successModel => {
         BlogService.add(successModel.title, successModel.content)
-        Redirect(routes.Application.blogs)
+        Redirect(routes.Application.blogs())
       }
     )
   }
 
   def viewBlog(id: Long) = Action {
-    Ok("View blog :: " + id)
+    Ok(views.html.viewBlog(BlogService.all().find(_.id == id)))
   }
   
 }
