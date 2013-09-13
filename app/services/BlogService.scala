@@ -1,35 +1,30 @@
 package services
 
-import models.{Comment, Blog}
-import org.squeryl.{Table, Schema}
-import org.squeryl.PrimitiveTypeMode._
 
-object BlogDB extends Schema {
-  val blogTable: Table[Blog] = table[Blog]("blogs")
-  val commentTable: Table[Comment] = table[Comment]("comments")
+object Blogs extends Table[Blog]("Blogs") {
+  def id = column[Long]("id", O.PrimaryKey)
+  def title = column[String]("title")
+  def content = column[String]("content")
 
-  val blogToComments =
-    oneToManyRelation(blogTable, commentTable)
-    .via((blog, comment) => blog.id === comment.blogId)
+  def * = id ~ title ~ content <> (Blog, Blog.unapply _)
 }
 
 object BlogService {
-  import BlogDB._
 
   def all(): List[Blog] =
-    inTransaction {
-      from(blogTable)(s => select(s)).toList
+    Database.forDataSource(DB.getDataSource()) withSession {
+      Query(Blogs).list
     }
 
-  def add(title: String, content: String) {
-    inTransaction {
-      blogTable.insert(Blog(title, content))
+  def add(title: String, content: String): Long = {
+    Database.forDataSource(DB.getDataSource()) withSession {
+      Blogs.insert(Blog(0, title, content))
     }
   }
 
   def delete(id: Long) = {
-    inTransaction {
-      blogTable.delete(id)
+    Database.forDataSource(DB.getDataSource()) withSession {
+      Query(Blogs).where(b => b.id === id).delete
     }
   }
 }
