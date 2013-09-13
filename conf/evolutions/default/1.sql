@@ -5,24 +5,24 @@
 # --- !Ups
 CREATE SEQUENCE blog_id_seq;
 CREATE TABLE Blogs (
-  blogId integer NOT NULL DEFAULT nextval('blog_id_seq'),
+  id integer NOT NULL DEFAULT nextval('blog_id_seq'),
   title varchar(255),
   content varchar(max)
 );
 
 CREATE SEQUENCE users_id_seq;
 CREATE TABLE Users (
-  userId integer NOT NULL DEFAULT nextval('users_id_seq'),
+  id integer NOT NULL DEFAULT nextval('users_id_seq'),
   username varchar(20)
 );
 
 CREATE SEQUENCE comments_id_Seq;
 CREATE TABLE Comments (
-  commentId integer NOT NULL DEFAULT nextval('comments_id_Seq'),
+  id integer NOT NULL DEFAULT nextval('comments_id_Seq'),
   blogId integer NOT NULL,
   username varchar(20),
   FOREIGN KEY (blogId)
-  REFERENCES public.Blogs(blogId)
+  REFERENCES public.Blogs(id)
 );
 
 
