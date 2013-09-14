@@ -43,10 +43,9 @@ a {
     border-radius: 5px;
 }
 
-.blogForm {
+.blogForm, .comments, .commentForm {
     background-color: #ceeaff;
     border-radius: 5px;
     padding: 10px;
     border: 1px solid #7d98ae;
 }
-
