@@ -1,30 +1,26 @@
 package services
 
-
-object Blogs extends Table[Blog]("Blogs") {
-  def id = column[Long]("id", O.PrimaryKey)
-  def title = column[String]("title")
-  def content = column[String]("content")
-
-  def * = id ~ title ~ content <> (Blog, Blog.unapply _)
-}
+import models.{UsersDAO, NewBlog, Blog, BlogDAO}
+import play.api.Play.current
+import play.api.db.slick.Config.driver.simple._
+import play.api.db.slick.DB
+import play.api.Play.current
+import play.api.db.slick.Config.driver.simple._
+import play.api.db.slick.DB
+import play.api.Play.current
+import play.api.db.slick.Config.driver.simple._
+import play.api.db.slick.DB
 
 object BlogService {
-
   def all(): List[Blog] =
-    Database.forDataSource(DB.getDataSource()) withSession {
-      Query(Blogs).list
-    }
+    BlogDAO.all()
 
-  def add(title: String, content: String): Long = {
-    Database.forDataSource(DB.getDataSource()) withSession {
-      Blogs.insert(Blog(0, title, content))
-    }
-  }
+  def add(userId: Long, title: String, content: String): Long =
+    BlogDAO.insert(NewBlog(userId, title, content))
 
-  def delete(id: Long) = {
-    Database.forDataSource(DB.getDataSource()) withSession {
-      Query(Blogs).where(b => b.id === id).delete
-    }
-  }
+  def delete(id: Long) =
+    BlogDAO.delete(id)
+
+  def blogUserPairs() =
+    BlogDAO.blogUserPairs()
 }

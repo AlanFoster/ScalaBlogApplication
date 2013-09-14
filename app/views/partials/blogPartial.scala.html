@@ -1,8 +1,7 @@
-@(blog: Blog)
+@(blog: Blog, poster: User)
 <div>
-    <h3><a href="blogs/@blog.id">@blog.title</a></h3>
+    <h3><a href="@routes.Application.viewBlog(blog.id)">@blog.title</a></h3>
+    <h1>Posted By @poster.username</h1>
     <hr />
-    <div>
         @blog.content
-    </div>
 </div>

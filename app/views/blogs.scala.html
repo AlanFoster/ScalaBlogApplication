@@ -1,15 +1,15 @@
-@(blogs: List[Blog], blogForm: Form[BlogForm])
+@(blogPairs: List[(Blog, User)], blogForm: Form[BlogForm])
 @import helper._
 @import partials._
 
 @main("View All"){
     <div>
-        @blogs.map { blog =>
-            @blogPartial(blog)
+        @for((blog, poster) <- blogPairs) {
+            @blogPartial(blog, poster)
         }
     </div>
 
-    @form(routes.Application.newBlog) {
+    @form(routes.Application.newBlog()) {
         @inputText(blogForm("title"))
         @inputText(blogForm("content"))
         <input type="submit" value="Add Blog" />

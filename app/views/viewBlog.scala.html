@@ -1,11 +1,10 @@
-@(blogOption: Option[Blog])
+@(blogPair: Option[(Blog, User)])
 @import helper._
 @import partials._
 
-
-@blogFound(blog: Blog) = {
+@blogFound(blog: Blog, poster: User) = {
     @main("Viewing blog") {
-        @blogPartial(blog)
+        @blogPartial(blog, poster)
      @*   <div>
         @blog.comments.map { comment =>
             <div>
@@ -23,9 +22,9 @@
     }
 }
 
-@blogOption match {
-    case Some(blog) => {
-        @blogFound(blog)
+@blogPair match {
+    case Some((blog, poster)) => {
+        @blogFound(blog, poster)
     }
     case _ => {
         @blogMissing
