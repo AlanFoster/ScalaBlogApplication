@@ -1,7 +1,12 @@
 @(blog: Blog, poster: User)
-<div>
-    <h3><a href="@routes.Application.viewBlog(blog.id)">@blog.title</a></h3>
-    <h1>Posted By @poster.username</h1>
-    <hr />
+<div class="blogPost">
+    <div class="info">
+        <span class="title"><a href="@routes.Application.viewBlog(blog.id)">@blog.title</a></span>
+        <span class="poster">Posted By @poster.username</span>
+    </div>
+    <div class="clear"></div>
+
+    <div class="content">
         @blog.content
+    </div>
 </div>

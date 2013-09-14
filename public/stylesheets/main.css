@@ -1,0 +1,52 @@
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    color: #3a3a3a;
+}
+
+a {
+    color: inherit;
+    display: inherit;
+    text-decoration: inherit;
+}
+
+.wrapper {
+    width: 984px;
+    margin: 0 auto;
+}
+
+.blogPost {
+    background-color: #a4cfe6;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 30px;
+}
+
+.clear {
+    float: none;
+}
+
+.blogPost .info {
+    margin-bottom: 12px;
+}
+
+.blogPost .info .title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.blogPost .info .poster {
+    float: right;
+}
+
+.blogPost .content {
+    background-color: white;
+    border-radius: 5px;
+}
+
+.blogForm {
+    background-color: #ceeaff;
+    border-radius: 5px;
+    padding: 10px;
+    border: 1px solid #7d98ae;
+}
+

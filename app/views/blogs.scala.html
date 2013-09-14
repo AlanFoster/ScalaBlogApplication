@@ -2,14 +2,14 @@
 @import helper._
 @import partials._
 
-@main("View All"){
+@main("Blogs"){
     <div>
         @for((blog, poster) <- blogPairs) {
             @blogPartial(blog, poster)
         }
     </div>
 
-    @form(routes.Application.newBlog()) {
+    @form(routes.Application.newBlog(), 'class -> "blogForm") {
         @inputText(blogForm("title"))
         @inputText(blogForm("content"))
         <input type="submit" value="Add Blog" />
