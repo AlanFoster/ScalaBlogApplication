@@ -6,7 +6,7 @@
 CREATE SEQUENCE blog_id_seq;
 CREATE TABLE Blogs (
   id integer NOT NULL DEFAULT nextval('blog_id_seq'),
-  USER_ID integer NOT NULL,
+  user_id integer NOT NULL,
   title varchar(255),
   content varchar(max)
 );
@@ -25,6 +25,11 @@ CREATE TABLE Comments (
   FOREIGN KEY (blogId) REFERENCES Blogs(id)
 );
 
+-- Data population
+INSERT INTO users (username) values ('Admin');
+INSERT INTO users (username) values ('Guest');
+
+INSERT INTO blogs (user_id, title, content) VALUES (1, 'First post', 'Hello World!');
 
 # --- !Downs
 DROP TABLE Blogs;

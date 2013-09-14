@@ -13,10 +13,4 @@ object UsersDAO extends Table[User]("USERS") {
 
   def * = id.? ~ username <> (User, User.unapply _)
   def autoIncr = id.? ~ username <> (User, User.unapply _) returning id
-
-  // Add a dummy admin account for now since the 1.sql doesn't populate as expected
-  def dummy() =
-    DB.withSession { implicit session: scala.slick.session.Session =>
-      this.insert(User(Some(1), "Admin"))
-    }
 }

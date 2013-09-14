@@ -1,15 +1,6 @@
 package services
 
-import models.{UsersDAO, NewBlog, Blog, BlogDAO}
-import play.api.Play.current
-import play.api.db.slick.Config.driver.simple._
-import play.api.db.slick.DB
-import play.api.Play.current
-import play.api.db.slick.Config.driver.simple._
-import play.api.db.slick.DB
-import play.api.Play.current
-import play.api.db.slick.Config.driver.simple._
-import play.api.db.slick.DB
+import models.{NewBlog, Blog, BlogDAO}
 
 object BlogService {
   def all(): List[Blog] =

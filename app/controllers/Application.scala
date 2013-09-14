@@ -16,8 +16,6 @@ object Application extends Controller {
   )
 
   def index = Action {
-    // Create a fake Admin account, since 1.sql doesn't appear to create our admin/guest account
-    UsersDAO.dummy()
     Redirect(routes.Application.blogs())
   }
 
