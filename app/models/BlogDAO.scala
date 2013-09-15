@@ -2,7 +2,7 @@ package models
 
 import play.api.Play.current
 import play.api.db.slick.Config.driver.simple._
-import play.api.db.slick.DB
+import play.api.db.slick.{Config, DB}
 import scala.slick.driver.ExtendedDriver
 
 object BlogDAO extends BaseTable[Blog]("BLOGS") {
@@ -13,14 +13,17 @@ object BlogDAO extends BaseTable[Blog]("BLOGS") {
   def content = column[String]("CONTENT")
   def user = foreignKey("USER_ID_FK", userId, UsersDAO)(_.id)
 
-  def * = id ~ userId ~ title ~ content <> (Blog, Blog.unapply _)
+  def dataCols = userId ~ title ~ content
 
-  def autoInc = userId ~ title ~ content <> (NewBlog, NewBlog.unapply _) returning id
+  def * = id.? ~: dataCols <> (Blog, Blog.unapply _)
 
+  def autoInc = dataCols returning id.? into {
+      case (m, id) => Function.uncurried( (Blog.apply _).curried(id)).tupled(m)
+  }
   // Data access
-  def insert(newBlog: NewBlog) =
+  def insert(blog: Blog): Blog =
     DB.withSession { implicit session: scala.slick.session.Session =>
-      BlogDAO.autoInc.insert(newBlog)
+      BlogDAO.autoInc.insert(blog.data)
     }
 
   def delete(id: Long) =
