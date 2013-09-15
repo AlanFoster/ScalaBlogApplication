@@ -37,7 +37,7 @@ object Application extends Controller {
   def viewBlog(id: Long) = Action {
     // TODO This should be in my data access layer
     val pairs: List[(Blog, User)] = BlogService.blogUserPairs()
-    Ok(views.html.viewBlog(pairs.find(_._1.id.getOrElse(0l) == id)))
+    Ok(views.html.viewBlog(pairs.find(_._1.id == id)))
   }
   
 }

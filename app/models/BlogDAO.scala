@@ -5,6 +5,9 @@ import play.api.db.slick.Config.driver.simple._
 import play.api.db.slick.{Config, DB}
 import scala.slick.driver.ExtendedDriver
 
+
+// TODO It would be nice to split this code into reusable queries with no session, and the actual implementation with sesion
+
 object BlogDAO extends BaseTable[Blog]("BLOGS") {
   def id = column[Long]("ID", O.PrimaryKey, O.AutoInc)
 
@@ -15,15 +18,14 @@ object BlogDAO extends BaseTable[Blog]("BLOGS") {
 
   def dataCols = userId ~ title ~ content
 
-  def * = id.? ~: dataCols <> (Blog, Blog.unapply _)
+  def * = id ~: dataCols <> (Blog, Blog.unapply _)
 
-  def autoInc = dataCols returning id.? into {
-    case (m, id) => Function.uncurried( (Blog.apply _).curried(id)).tupled(m)
-  }
+  def autoInc = dataCols <> (NewBlog, NewBlog.unapply _) returning id
+
   // Data access
-  def insert(blog: Blog): Blog =
+  def insert(newBlog: NewBlog): Long =
     DB.withSession { implicit session: scala.slick.session.Session =>
-      BlogDAO.autoInc.insert(blog.data)
+      BlogDAO.autoInc.insert(newBlog)
     }
 
   def delete(id: Long) =
@@ -31,14 +33,27 @@ object BlogDAO extends BaseTable[Blog]("BLOGS") {
       Query(BlogDAO).where(b => b.id === id).delete
     }
 
+  private def blogUserPairsQuery = {
+    for {
+      blog <- BlogDAO
+      poster <- blog.user
+    } yield (blog, poster)
+  }
+
+/*  def findBlogAndPosterById(blogId: Long) = {
+    for {
+      (blog, poster) <- blogUserPairsQuery
+      // Cannot prove that Option[U] =:= Long.
+      if blog.id.get == blogId
+    } yield(blog, poster)
+  }*/
+
   def blogUserPairs(): List[(Blog, User)] = {
     DB.withSession {
       implicit session: scala.slick.session.Session => {
-        for {
-          blog <- BlogDAO
-          poster <- blog.user
-        } yield (blog, poster)
+        blogUserPairsQuery
       }.list
     }
   }
+
 }

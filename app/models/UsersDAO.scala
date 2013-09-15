@@ -9,6 +9,6 @@ object UsersDAO extends Table[User]("USERS") {
     def id = column[Long]("ID", O.PrimaryKey, O.AutoInc)
     def username = column[String]("USERNAME")
 
-    def * = id.? ~ username <> (User, User.unapply _)
-    def autoIncr = id.? ~ username <> (User, User.unapply _) returning id
+  def * = id ~ username <> (User, User.unapply _)
+  def autoIncr = id ~ username <> (User, User.unapply _) returning id
 }

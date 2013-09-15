@@ -1,9 +1,12 @@
 package models
 
-import play.api.Play.current
-import play.api.db.slick.Config.driver.simple._
-import play.api.db.slick.DB
+/**
+ * Represents a new Entity which has not been registered within the system yet.
+ * As a result is has no id yet.
+ */
+case class NewBlog(userId: Long, title: String, content: String)
 
-case class Blog(id: Option[Long], userId: Long, title: String, content: String) {
-  def data = (userId, title, content)
-}
+/**
+ * Represents an Entity which has already been registered with the system.
+ */
+case class Blog(id: Long, userId: Long, title: String, content: String);
