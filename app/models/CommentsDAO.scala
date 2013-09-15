@@ -3,8 +3,9 @@ package models
 import play.api.Play.current
 import play.api.db.slick.Config.driver.simple._
 import play.api.db.slick.DB
+import scala.slick.lifted
 
-object Comments extends Table[Comment]("COMMENTS") {
+object CommentsDAO extends Table[Comment]("COMMENTS") {
   def id = column[Long]("ID", O.PrimaryKey, O.AutoInc)
 
   def blogId = column[Long]("BLOGID")
@@ -20,6 +21,6 @@ object Comments extends Table[Comment]("COMMENTS") {
 
   def blog = foreignKey("BLOG_FK", blogId, BlogDAO)(_.id)
 
-  def findCommentsById(blogId: Long) =
-    Query(this).where(_.blogId === Option(blogId))
+  def findCommentsByIdQuery(blogId: Long): lifted.Query[CommentsDAO.type, Comment] =
+    Query(this).where(_.blogId === blogId)
 }

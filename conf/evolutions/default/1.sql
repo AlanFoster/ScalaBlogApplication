@@ -22,8 +22,8 @@ CREATE TABLE Comments (
   id integer NOT NULL DEFAULT nextval('comments_id_Seq'),
   blogId integer NOT NULL,
   userId integer NOT NULL,
+  content varchar(5000) NOT NULL,
 
-  username varchar(20),
   FOREIGN KEY (blogId) REFERENCES Blogs(id)
 );
 

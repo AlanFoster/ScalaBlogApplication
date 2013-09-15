@@ -4,6 +4,7 @@ import play.api.Play.current
 import play.api.db.slick.Config.driver.simple._
 import play.api.db.slick.{Config, DB}
 import scala.slick.driver.ExtendedDriver
+import scala.slick.lifted
 
 
 // TODO It would be nice to split this code into reusable queries with no session, and the actual implementation with sesion
@@ -40,13 +41,18 @@ object BlogDAO extends BaseTable[Blog]("BLOGS") {
     } yield (blog, poster)
   }
 
-/*  def findBlogAndPosterById(blogId: Long) = {
-    for {
-      (blog, poster) <- blogUserPairsQuery
-      // Cannot prove that Option[U] =:= Long.
-      if blog.id.get == blogId
-    } yield(blog, poster)
-  }*/
+  private def blogUserPairsByIdQuery(blogId: Long) =
+    blogUserPairsQuery.where(_._1.id === blogId)
+
+  def findTriple(blogId: Long): Option[(Blog, User, List[Comment])] = {
+    DB.withSession {
+      implicit session: scala.slick.session.Session => {
+        (blogUserPairsByIdQuery(blogId)).firstOption.map {
+            case (blog, poster) => (blog, poster, CommentsDAO.findCommentsByIdQuery(blogId).list)
+        }
+      }
+    }
+  }
 
   def blogUserPairs(): List[(Blog, User)] = {
     DB.withSession {
@@ -55,5 +61,4 @@ object BlogDAO extends BaseTable[Blog]("BLOGS") {
       }.list
     }
   }
-
 }

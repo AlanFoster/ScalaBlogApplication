@@ -5,7 +5,10 @@ import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
 import views.html
-import models.{User, Blog, UsersDAO, BlogForm}
+import models._
+import models.User
+import models.BlogForm
+import models.Blog
 
 object Application extends Controller {
   val blogForm: Form[BlogForm] = Form(
@@ -35,9 +38,8 @@ object Application extends Controller {
   }
 
   def viewBlog(id: Long) = Action {
-    // TODO This should be in my data access layer
-    val pairs: List[(Blog, User)] = BlogService.blogUserPairs()
-    Ok(views.html.viewBlog(pairs.find(_._1.id == id)))
+    val triple: Option[(Blog, User, List[Comment])] = BlogService.triple(id)
+    Ok(views.html.viewBlog(triple))
   }
   
 }

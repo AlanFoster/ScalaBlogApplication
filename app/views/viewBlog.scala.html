@@ -1,23 +1,22 @@
-@(blogPair: Option[(Blog, User)])
+@(blogPair: Option[(Blog, User, List[Comment])])
 @import helper._
 @import partials._
 
-@blogFound(blog: Blog, poster: User) = {
+@blogFound(blog: Blog, poster: User, comments: List[Comment]) = {
     @main("Viewing blog") {
         @blogPartial(blog, poster)
 
         <div class="comments">
-            <strong>TODO</strong>
-            Comments :
-            @*
-            <div>
-                @blog.comments.map { comment =>
-                    <div>
-                        <h3>@comment.id</h3>
-                        @comment.content
-                    </div>
-                }
-            </div>*@
+            @if(comments.nonEmpty) {
+                    @comments.zipWithIndex.map { case (comment, index) =>
+                        <div class="comment">
+                            <div>Comment #@{index + 1}</div>
+                            @comment.content
+                        </div>
+                    }
+            } else {
+                No comments available.
+            }
         </div>
 
     }
@@ -30,8 +29,8 @@
 }
 
 @blogPair match {
-    case Some((blog, poster)) => {
-        @blogFound(blog, poster)
+    case Some((blog, poster, comments)) => {
+        @blogFound(blog, poster, comments)
     }
     case _ => {
         @blogMissing

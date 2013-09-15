@@ -1,6 +1,9 @@
 package services
 
-import models.{NewBlog, Blog, BlogDAO}
+import models._
+import models.NewBlog
+import models.Blog
+import models.User
 
 object BlogService {
   def all(): List[Blog] =
@@ -14,4 +17,7 @@ object BlogService {
 
   def blogUserPairs() =
     BlogDAO.blogUserPairs()
+
+  def triple(blogId: Long): Option[(Blog, User, List[Comment])] =
+    BlogDAO.findTriple(blogId)
 }
