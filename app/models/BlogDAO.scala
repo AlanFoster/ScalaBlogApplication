@@ -18,7 +18,7 @@ object BlogDAO extends BaseTable[Blog]("BLOGS") {
   def * = id.? ~: dataCols <> (Blog, Blog.unapply _)
 
   def autoInc = dataCols returning id.? into {
-      case (m, id) => Function.uncurried( (Blog.apply _).curried(id)).tupled(m)
+    case (m, id) => Function.uncurried( (Blog.apply _).curried(id)).tupled(m)
   }
   // Data access
   def insert(blog: Blog): Blog =
