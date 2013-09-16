@@ -1,8 +1,8 @@
-@(blogPair: Option[(Blog, User, List[Comment])])
+@(blogPair: Option[(domain.Blog, domain.User, List[domain.Comment])])
 @import helper._
 @import partials._
 
-@blogFound(blog: Blog, poster: User, comments: List[Comment]) = {
+@blogFound(blog: domain.Blog, poster: domain.User, comments: List[domain.Comment]) = {
     @main("Viewing blog") {
         @blogPartial(blog, poster)
 

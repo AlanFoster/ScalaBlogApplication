@@ -1,23 +1,21 @@
 package services
 
-import models._
-import models.NewBlog
-import models.Blog
-import models.User
+import domain.{Comment, User, NewBlog, Blog}
+import dao.Blogs
 
 object BlogService {
   def all(): List[Blog] =
-    BlogDAO.all()
+    Blogs.all()
 
   def add(userId: Long, title: String, content: String): Long =
-    BlogDAO.insert(NewBlog(userId, title, content))
+    Blogs.insert(NewBlog(userId, title, content))
 
   def delete(id: Long) =
-    BlogDAO.delete(id)
+    Blogs.delete(id)
 
   def blogUserPairs() =
-    BlogDAO.blogUserPairs()
+    Blogs.blogUserPairs()
 
   def triple(blogId: Long): Option[(Blog, User, List[Comment])] =
-    BlogDAO.findTriple(blogId)
+    Blogs.findTriple(blogId)
 }

@@ -1,21 +1,21 @@
-package models
+package dao
 
 import play.api.Play.current
 import play.api.db.slick.Config.driver.simple._
 import play.api.db.slick.{Config, DB}
 import scala.slick.driver.ExtendedDriver
 import scala.slick.lifted
-
+import domain.{NewBlog, Blog, User, Comment}
 
 // TODO It would be nice to split this code into reusable queries with no session, and the actual implementation with sesion
 
-object BlogDAO extends BaseTable[Blog]("BLOGS") {
+object Blogs extends BaseTable[Blog]("BLOGS") {
   def id = column[Long]("ID", O.PrimaryKey, O.AutoInc)
 
   def userId = column[Long]("USER_ID")
   def title = column[String]("TITLE")
   def content = column[String]("CONTENT")
-  def user = foreignKey("USER_ID_FK", userId, UsersDAO)(_.id)
+  def user = foreignKey("USER_ID_FK", userId, Users)(_.id)
 
   def dataCols = userId ~ title ~ content
 
@@ -26,17 +26,17 @@ object BlogDAO extends BaseTable[Blog]("BLOGS") {
   // Data access
   def insert(newBlog: NewBlog): Long =
     DB.withSession { implicit session: scala.slick.session.Session =>
-      BlogDAO.autoInc.insert(newBlog)
+      Blogs.autoInc.insert(newBlog)
     }
 
   def delete(id: Long) =
     DB.withSession { implicit session: scala.slick.session.Session =>
-      Query(BlogDAO).where(b => b.id === id).delete
+      Query(Blogs).where(b => b.id === id).delete
     }
 
   private def blogUserPairsQuery = {
     for {
-      blog <- BlogDAO
+      blog <- Blogs
       poster <- blog.user
     } yield (blog, poster)
   }
@@ -48,7 +48,7 @@ object BlogDAO extends BaseTable[Blog]("BLOGS") {
     DB.withSession {
       implicit session: scala.slick.session.Session => {
         (blogUserPairsByIdQuery(blogId)).firstOption.map {
-            case (blog, poster) => (blog, poster, CommentsDAO.findCommentsByIdQuery(blogId).list)
+            case (blog, poster) => (blog, poster, Comments.findCommentsByIdQuery(blogId).list)
         }
       }
     }

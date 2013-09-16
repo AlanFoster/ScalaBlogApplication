@@ -1,11 +1,12 @@
-package models
+package dao
 
 import play.api.Play.current
 import play.api.db.slick.Config.driver.simple._
 import play.api.db.slick.DB
 import scala.slick.lifted
+import domain.Comment
 
-object CommentsDAO extends Table[Comment]("COMMENTS") {
+object Comments extends Table[Comment]("COMMENTS") {
   def id = column[Long]("ID", O.PrimaryKey, O.AutoInc)
 
   def blogId = column[Long]("BLOGID")
@@ -19,8 +20,8 @@ object CommentsDAO extends Table[Comment]("COMMENTS") {
     (m, id) => Function.uncurried( (Comment.apply _).curried(id) ).tupled(m)
   }
 
-  def blog = foreignKey("BLOG_FK", blogId, BlogDAO)(_.id)
+  def blog = foreignKey("BLOG_FK", blogId, Blogs)(_.id)
 
-  def findCommentsByIdQuery(blogId: Long): lifted.Query[CommentsDAO.type, Comment] =
+  def findCommentsByIdQuery(blogId: Long): lifted.Query[Comments.type, Comment] =
     Query(this).where(_.blogId === blogId)
 }

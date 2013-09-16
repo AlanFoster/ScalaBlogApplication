@@ -5,10 +5,8 @@ import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
 import views.html
-import models._
-import models.User
-import models.BlogForm
-import models.Blog
+import domain.{Comment, User, Blog}
+import formmodel.BlogForm
 
 object Application extends Controller {
   val blogForm: Form[BlogForm] = Form(
