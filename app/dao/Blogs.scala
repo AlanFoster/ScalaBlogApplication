@@ -5,7 +5,7 @@ import play.api.db.slick.Config.driver.simple._
 import play.api.db.slick.{Config, DB}
 import scala.slick.driver.ExtendedDriver
 import scala.slick.lifted
-import domain.{NewBlog, Blog, User, Comment}
+import model.domain.{NewBlog, Blog, User, Comment}
 
 // TODO It would be nice to split this code into reusable queries with no session, and the actual implementation with sesion
 

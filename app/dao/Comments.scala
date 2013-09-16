@@ -4,7 +4,7 @@ import play.api.Play.current
 import play.api.db.slick.Config.driver.simple._
 import play.api.db.slick.DB
 import scala.slick.lifted
-import domain.Comment
+import model.domain.Comment
 
 object Comments extends Table[Comment]("COMMENTS") {
   def id = column[Long]("ID", O.PrimaryKey, O.AutoInc)

@@ -1,6 +1,6 @@
 package services
 
-import domain.{Comment, User, NewBlog, Blog}
+import model.domain.{Comment, User, NewBlog, Blog}
 import dao.Blogs
 
 object BlogService {

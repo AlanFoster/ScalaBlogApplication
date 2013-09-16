@@ -4,7 +4,7 @@ import play.api.Play.current
 import play.api.db.slick.Config.driver.simple._
 import play.api.db.slick.DB
 import scala.slick.driver.ExtendedDriver
-import domain.User
+import model.domain.User
 
 object Users extends Table[User]("USERS") {
   def id = column[Long]("ID", O.PrimaryKey, O.AutoInc)

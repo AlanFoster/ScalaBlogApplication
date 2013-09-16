@@ -1,4 +1,4 @@
-package domain
+package model.domain
 
 /**
  * Represents a new Entity which has not been registered within the system yet.

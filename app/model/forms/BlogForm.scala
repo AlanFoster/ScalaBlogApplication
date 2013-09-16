@@ -1,4 +1,4 @@
-package formmodel
+package model.forms
 
 /**
  * Intermediate Data model used to represent creating a new blog within a form.

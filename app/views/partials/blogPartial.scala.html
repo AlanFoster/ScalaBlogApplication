@@ -1,4 +1,5 @@
-@(blog: domain.Blog, poster: domain.User)
+@(blog: Blog, poster: User)
+@import model.domain.{Blog, User}
 
 <div class="blogPost">
     <div class="info">
@@ -8,6 +9,6 @@
     <div class="clear"></div>
 
     <div class="content">
-        @blog.content
+    @blog.content
     </div>
 </div>

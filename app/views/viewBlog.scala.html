@@ -1,8 +1,9 @@
-@(blogPair: Option[(domain.Blog, domain.User, List[domain.Comment])])
-@import helper._
+@(blogPair: Option[(Blog, User, List[Comment])])
+@import model.domain._
+@import model.forms._
 @import partials._
 
-@blogFound(blog: domain.Blog, poster: domain.User, comments: List[domain.Comment]) = {
+@blogFound(blog: Blog, poster: User, comments: List[Comment]) = {
     @main("Viewing blog") {
         @blogPartial(blog, poster)
 
